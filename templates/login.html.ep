@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Login - Wyrmgarde</title>
+	<link rel="preload" href="/style.css" as="style">
+	<link rel="stylesheet" type="text/css" href="/style.css" as="style">
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<meta charset="UTF-8" name="viewport" content="width=device-width">
+</head>
+<body>
+	<section>
+		<header>
+			<img src="/logo-white.svg" alt="Wyrmgarde"><p>v0.0.1</p>
+		</header>
+		<div class="message ok"><%= flash('ok') %></div>
+		<div class="message err"><%= flash('err') %></div>
+		<div class="message info"><%= flash('info') %></div>
+		<form method="post" action="/login">
+			<input type="text" id="username" name="username" placeholder="Username" required>
+			<input type="password" id="user_password" name="password" placeholder="Password" required>
+			<input type="submit" value="Login">
+		</form>
+	</section>
+</body>
+</html>

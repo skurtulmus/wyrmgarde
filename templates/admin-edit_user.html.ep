@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Edit User (Admin) - Wyrmgarde</title>
+	<link rel="preload" href="/style.css" as="style">
+	<link rel="stylesheet" type="text/css" href="/style.css" as="style">
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<meta charset="UTF-8" name="viewport" content="width=device-width">
+</head>
+<body>
+	<aside>
+		<header>
+			<a href="/home"><img src="/logo-white.svg" alt="Wyrmgarde"></a><p>v0.0.1</p>
+		</header>
+		<nav>
+			<a href="/vault/search_password">Password Vault</a>
+			<a href="/user/user_profile">User Profile</a>
+			<a href="/user/change_password">Change Password</a>
+			% if ($s_username eq 'admin') {
+			<details>
+				<summary class="admin">Admin Settings</summary>
+				<a href="/admin/insert_password" class="sub admin">Insert New Password</a>
+				<a href="/admin/search_user" class="sub admin">Find Existing User</a>
+				<a href="/admin/create_user" class="sub admin">Create New User</a>
+			</details>
+			% }
+		</nav>
+		<footer>
+			<form action="/logout" method="POST">
+				<button type="submit">Log Out</button>
+			</form>
+		</footer>
+	</aside>
+	<main>
+		<section>
+			<h2>Editing User: <i><%= stash('a_username') %></i></h2>
+			<div class="message ok"><%= flash('ok') %></div>
+			<div class="message err"><%= flash('err') %></div>
+			<div class="message info"><%= flash('info') %></div>
+			<form method="POST" action="/admin/edit_user">
+				<input type="hidden" id="username" name="username" value="<%= stash('a_username') %>" required>
+				<label for="new_password"><b>New Username:</b></label>
+				<input type="text" id="new_username" name="new_username" value="<%= stash('a_username') %>" placeholder="<%= stash('a_username') %>" required>
+				<label for="new_password"><b>New Password:</b></label>
+				<input type="password" id="new_password" name="new_password" placeholder="No changes will be made">
+				<div class="multi">
+					<p><b>Select Roles:</b></p>
+					% foreach my $role (@$all_roles) {
+					<label>
+						<input type="checkbox" id="role" name="role" value="<%= $role %>"
+						% if (grep { $_ eq $role } @$user_roles) {
+							checked
+						% }
+						> <%= $role %>
+					</label>
+					% }
+				</div>
+				<input type="submit" value="Update">
+			</form>
+		</section>
+	</main>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wyrmgarde</title>
+	<link rel="preload" href="/style.css" as="style">
+	<link rel="stylesheet" type="text/css" href="/style.css" as="style">
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<meta charset="UTF-8" name="viewport" content="width=device-width">
+</head>
+<body>
+	<aside>
+		<header>
+			<a href="/home"><img src="/logo-white.svg" alt="Wyrmgarde"></a><p>v0.0.1</p>
+		</header>
+		<nav>
+			<a href="/vault/search_password">Password Vault</a>
+			<a href="/user/user_profile">User Profile</a>
+			<a href="/user/change_password">Change Password</a>
+			% if ($s_username eq 'admin') {
+			<details>
+				<summary class="admin">Admin Settings</summary>
+				<a href="/admin/insert_password" class="sub admin">Insert New Password</a>
+				<a href="/admin/search_user" class="sub admin">Find Existing User</a>
+				<a href="/admin/create_user" class="sub admin">Create New User</a>
+			</details>
+			% }
+		</nav>
+		<footer>
+			<form action="/logout" method="POST">
+				<button type="submit">Log Out</button>
+			</form>
+		</footer>
+	</aside>
+	<main>
+		<section>
+			% if (flash 'ok') {
+			<div class="message ok"><%= flash('ok') %></div>
+			% } elsif (flash 'err') {
+			<div class="message err"><%= flash('err') %></div>
+			% } elsif (flash 'err') {
+			<div class="message info"><%= flash('info') %></div>
+			% } else {
+			<div class="message info">Logged in at: <b><%= $login_time %></b></p>
+			% }
+		</section>
+	</main>
+</body>
+</html>

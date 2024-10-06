@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Create New User (Admin) - Wyrmgarde</title>
+	<link rel="preload" href="/style.css" as="style">
+	<link rel="stylesheet" type="text/css" href="/style.css" as="style">
+	<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
+	<meta charset="UTF-8" name="viewport" content="width=device-width">
+</head>
+<body>
+	<aside>
+		<header>
+			<a href="/home"><img src="/logo-white.svg" alt="Wyrmgarde"></a><p>v0.0.1</p>
+		</header>
+		<nav>
+			<a href="/vault/search_password">Password Vault</a>
+			<a href="/user/user_profile">User Profile</a>
+			<a href="/user/change_password">Change Password</a>
+			% if ($s_username eq 'admin') {
+			<details>
+				<summary class="admin">Admin Settings</summary>
+				<a href="/admin/insert_password" class="sub admin">Insert New Password</a>
+				<a href="/admin/search_user" class="sub admin">Find Existing User</a>
+				<a href="/admin/create_user" class="sub admin">Create New User</a>
+			</details>
+			% }
+		</nav>
+		<footer>
+			<form action="/logout" method="POST">
+				<button type="submit">Log Out</button>
+			</form>
+		</footer>
+	</aside>
+	<main>
+		<section>
+			<h2>Create New User</h2>
+			<div class="message ok"><%= flash('ok') %></div>
+			<div class="message err"><%= flash('err') %></div>
+			<div class="message info"><%= flash('info') %></div>
+			<form method="post" action="/admin/create_user">
+				<input type="text" id="username" name="username" placeholder="Username" required>
+				<input type="password" id="password" name="password" placeholder="Password" required>
+				<div class="multi">
+					<p><b>Select roles:</b></p>
+					% foreach my $role (@$roles) {
+					<label>
+						<input type="checkbox" id="role" name="role" value="<%= $role %>"> <%= $role %>
+					</label>
+					% }
+				</div>
+				<input type="submit" value="Create">
+			</form>
+		</section>
+	</main>
+</body>
+</html>

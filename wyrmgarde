@@ -1,0 +1,24 @@
+#!/usr/bin/perl
+
+use Mojolicious::Lite;
+use lib "lib";
+use Wyrmgarde::Config;
+use Wyrmgarde::DBUtils;
+use Wyrmgarde::Init;
+use Wyrmgarde::Route;
+use Wyrmgarde::Cache;
+
+$ENV{MOJO_MODE} = 'production';
+print "~~~   Wyrmgarde - v0.0.1   ~~~\n";
+my $config = Wyrmgarde::Config::load('config/config.ini', app->log);
+my $dbh    = Wyrmgarde::DBUtils::connect($config->{database}, app->log);
+#my $s = $d->prepare("INSERT INTO passwords (name, encrypted_password) VALUES (?, ?)");
+#$s->execute($name, $enc);
+Wyrmgarde::Init::init($config->{init}, $dbh, app->log);
+Wyrmgarde::Route::register(app, $dbh, $config->{keys}->{crypt_key});
+Wyrmgarde::Cache::control(app);
+app->secrets([$config->{keys}->{mojo_key}]);
+app->start(
+	'daemon',
+	'-l', 'http://*:3711',
+);
